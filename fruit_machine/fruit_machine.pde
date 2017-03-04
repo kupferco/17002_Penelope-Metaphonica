@@ -9,7 +9,7 @@
 //     c = Clear all slides
 // 
 // Comment IN / OUT: print added image message to console
-// Comment IN / OUT: auto-reset slideshow at last slide
+// Comment IN / OUT: auto-reset slideshowat last slide
 //
 // https://processing.org/discourse/beta/num_1274874020.html
 // 
@@ -21,11 +21,12 @@ ArrayList photos = new ArrayList();
 String[] loadFilenames;
 PImage[] loadPhotos;
 int counter, fileCount;
-boolean autoPlay = false; // by default autoplay is OFF
+boolean autoPlay = true; // by default autoplay is OFF
 
 void setup() {
-  size(1280, 720, OPENGL);
-  //  size(screen.width,screen.height,OPENGL); // full screen mode
+  size(800, 600, OPENGL);
+  //size(displayWidth, displayHeight, OPENGL); // full screen mode
+  //fullScreen();
   smooth();
   loadPhotos = new PImage[10000]; // maximum of 10.000 images
   loadFilenames();
@@ -34,23 +35,23 @@ void setup() {
 }
 
 void draw() {
-  background(51);
-  checkNew(); // checks for new images in the data directory every draw cycle
+  background(255);
+  //checkNew(); // checks for new images in the data directory every draw cycle
   if (autoPlay) {
     autoPlay();
   }
   for (int i = 0; i < photos.size(); i++) {
     Photo s = (Photo) photos.get(i);
-    s.display();
-    s.move();
+    s.update();
   }
-  //  if (photos.size() == fileCount) {photos.clear();} // reset slideshow when it reaches the last slide
+  //if (photos.size() == fileCount) {photos.clear();} // reset slideshow when it reaches the last slide
 }
 
 void loadFilenames() {
   java.io.File folder = new java.io.File(dataPath("")); // reads files from data folder
   java.io.FilenameFilter imgFilter = new java.io.FilenameFilter() {
     public boolean accept(File dir, String name) {
+      println(name);
       return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png");
     }
   };
@@ -60,7 +61,7 @@ void loadFilenames() {
 void loadPhotos() {
   for (int i = fileCount; i < loadFilenames.length; i++) { // only load new images
     loadPhotos[i] = loadImage(loadFilenames[i]);
-    //    println("Photo added: " + loadFilenames[i]); // print added image message to console
+    println("Photo added: " + loadFilenames[i]); // print added image message to console
   }
 }
 
@@ -74,8 +75,8 @@ void checkNew() {
 
 void autoPlay() {
   counter++;
-  if (counter >= 60 && photos.size() < loadFilenames.length) {
-    photos.add(new Photo(random(80, width-80), random(60, height-60), random(-30, 30))); 
+  if (counter >= 160 && photos.size() < loadFilenames.length) {
+    photos.add(new Photo()); 
     counter=0;
   }
 }
@@ -88,11 +89,11 @@ void keyPressed() {
       autoPlay = true;
     }
   }
-  if (key == ' ') {
-    if (photos.size() < loadFilenames.length) {
-      photos.add(new Photo(random(80, width-80), random(60, height-60), random(-30, 30)));
-    }
-  }
+  //if (key == ' ') {
+  //  if (photos.size() < loadFilenames.length) {
+  //    photos.add(new Photo(random(80, width-80), random(60, height-60)));
+  //  }
+  //}
   if (key == 'x') {
     if (photos.size() > 0) {
       photos.remove(photos.size()-1);
