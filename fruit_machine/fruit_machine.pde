@@ -17,89 +17,132 @@
 
 import processing.opengl.*;
 
-ArrayList photos = new ArrayList();
-String[] loadFilenames;
-PImage[] loadPhotos;
-int counter, fileCount;
-boolean autoPlay = true; // by default autoplay is OFF
+ArrayList strips = new ArrayList();
+boolean clickLock = false;
+SoundControl sound;
+Robert robert;
+
+
+
+// =====================
+// CONTROL PANEL
+int totalStrips = 3;
+// Minimum 4
+int totalLoonies = 4;
+// =====================
+
 
 void setup() {
-  size(800, 600, OPENGL);
+  size(1024, 768, P2D);
   //size(displayWidth, displayHeight, OPENGL); // full screen mode
   //fullScreen();
   smooth();
-  loadPhotos = new PImage[10000]; // maximum of 10.000 images
-  loadFilenames();
-  loadPhotos(); // all existing images are loaded in setup
-  fileCount = loadFilenames.length;
+  strips.add(new Strip(0, totalLoonies, 30));
+  strips.add(new Strip(1, totalLoonies, 25));
+  strips.add(new Strip(2, totalLoonies, 36));
+
+  soundSetup();
+  sound = new SoundControl();
+
+  robert = new Robert(this);
 }
 
 void draw() {
   background(255);
-  //checkNew(); // checks for new images in the data directory every draw cycle
-  if (autoPlay) {
-    autoPlay();
+  for ( int s=0; s < totalStrips; s++ )
+  {
+    Strip strip = (Strip) strips.get(s);
+    strip.update();
   }
-  for (int i = 0; i < photos.size(); i++) {
-    Photo s = (Photo) photos.get(i);
-    s.update();
-  }
-  //if (photos.size() == fileCount) {photos.clear();} // reset slideshow when it reaches the last slide
+
+  soundDraw();
+  robert.update();
 }
 
-void loadFilenames() {
-  java.io.File folder = new java.io.File(dataPath("")); // reads files from data folder
-  java.io.FilenameFilter imgFilter = new java.io.FilenameFilter() {
-    public boolean accept(File dir, String name) {
-      println(name);
-      return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png");
+int haultCount = -1;
+void mousePressed() {
+  if ( clickLock ) {
+    // Nothing
+  } else {
+    Strip s = (Strip) strips.get(++haultCount);
+    s.hault();
+    sound.shortSound();
+    if ( haultCount == 2 ) {
+      clickLock = true;
+      sound.longSound();
+      robert.fadeIn();
+      haultCount = -1;
     }
-  };
-  loadFilenames = folder.list(imgFilter);
-}
-
-void loadPhotos() {
-  for (int i = fileCount; i < loadFilenames.length; i++) { // only load new images
-    loadPhotos[i] = loadImage(loadFilenames[i]);
-    println("Photo added: " + loadFilenames[i]); // print added image message to console
   }
 }
 
-void checkNew() {
-  loadFilenames();
-  if (loadFilenames.length > fileCount) {
-    loadPhotos(); 
-    fileCount = loadFilenames.length;
-  } // only call loadPhotos if there are new images
-}
-
-void autoPlay() {
-  counter++;
-  if (counter >= 160 && photos.size() < loadFilenames.length) {
-    photos.add(new Photo()); 
-    counter=0;
+void resumeFruitMachine() {
+  // Called by timer in Robert
+  for ( int s=0; s < totalStrips; s++ )
+  {
+    Strip strip = (Strip) strips.get(s);
+    strip.resume();
   }
+  clickLock = false;
 }
 
 void keyPressed() {
-  if (key == 'z') {
-    if (autoPlay) {
-      autoPlay = false;
-    } else {
-      autoPlay = true;
-    }
-  }
+  //if (key == 'z') {
+  //  if (autoPlay) {
+  //    autoPlay = false;
+  //  } else {
+  //    autoPlay = true;
+  //  }
+  //}
   //if (key == ' ') {
   //  if (photos.size() < loadFilenames.length) {
   //    photos.add(new Photo(random(80, width-80), random(60, height-60)));
   //  }
   //}
-  if (key == 'x') {
-    if (photos.size() > 0) {
-      photos.remove(photos.size()-1);
-    }
-  }
-  if (key == 'c') {
-    photos.clear();
-  }
+  //if (key == 'x') {
+  //  if (photos.size() > 0) {
+  //    photos.remove(photos.size()-1);
+  //  }
+  //}
+  //if (key == 'c') {
+  //  photos.clear();
+  //}
 }
+
+
+
+
+
+
+
+
+//String[] loadFilenames;
+//PImage[] loadPhotos;
+//int counter, fileCount;
+//boolean autoPlay = true; // by default autoplay is OFF
+
+////void loadFilenames() {
+////  java.io.File folder = new java.io.File(dataPath("")); // reads files from data folder
+////  java.io.FilenameFilter imgFilter = new java.io.FilenameFilter() {
+////    public boolean accept(File dir, String name) {
+////      println(name);
+////      return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png");
+////    }
+////  };
+////  loadFilenames = folder.list(imgFilter);
+////}
+
+//void loadPhotos() {
+//  for (int i = fileCount; i < loadFilenames.length; i++) { // only load new images
+//    loadPhotos[i] = loadImage(loadFilenames[i]);
+//    println("Photo added: " + loadFilenames[i]); // print added image message to console
+//  }
+//}
+
+//void checkNew() {
+//  loadFilenames();
+//  if (loadFilenames.length > fileCount) {
+//    loadPhotos(); 
+//    fileCount = loadFilenames.length;
+//  } // only call loadPhotos if there are new images
+//}
