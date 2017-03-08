@@ -12,8 +12,8 @@ class Robert {
   // =====================
   // CONTROL PANEL
   int fadeSpeed = 10;
-  int robertIntervalIn = 200;
-  int robertIntervalOut = 6000;
+  int robertIntervalIn = 4000;
+  int robertIntervalOut = 8000;
   String robertQuote = "Peter Green, 48 Laws of Power";
   // =====================
 
@@ -56,7 +56,7 @@ class Robert {
     fill(0, 0, 0, opacity);
     rect(0, 0, width, height);
     fill(255, 255, 255, opacity);
-    textSize(32);
+    textSize(44);
     text(stringQuote, 0, 0, width, height);
     textSize(24);
     text("Robert Greene, 48 Laws of Power", 200, 200, width, 800);

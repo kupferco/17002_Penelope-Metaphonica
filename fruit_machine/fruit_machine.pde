@@ -28,7 +28,7 @@ Robert robert;
 // CONTROL PANEL
 int totalStrips = 3;
 // Minimum 4
-int totalLoonies = 4;
+int totalLoonies = 13;
 // =====================
 
 
@@ -37,9 +37,9 @@ void setup() {
   //size(displayWidth, displayHeight, OPENGL); // full screen mode
   //fullScreen();
   smooth();
-  strips.add(new Strip(0, totalLoonies, 30));
-  strips.add(new Strip(1, totalLoonies, 25));
-  strips.add(new Strip(2, totalLoonies, 36));
+  strips.add(new Strip(0, totalLoonies, 40));
+  strips.add(new Strip(1, totalLoonies, 35));
+  strips.add(new Strip(2, totalLoonies, 37));
 
   soundSetup();
   sound = new SoundControl();

@@ -1,18 +1,23 @@
 import processing.sound.*;
-SoundFile[] files = new SoundFile[10];
+SoundFile[] shortSound = new SoundFile[16];
+SoundFile[] longSound = new SoundFile[51];
 int startLongSoundCount;
 boolean playLongSound = false;
-int longSoundInterval = 3000;
+int longSoundInterval = 2000;
 
 void soundSetup() {
-  // Load a soundfile from the /data folder of the sketch and play it back
-  files[0] = new SoundFile(this, "short_sound.mp3");
-  files[1] = new SoundFile(this, "long_sound.mp3");
+  for (int s=0; s < shortSound.length; s++) {
+    shortSound[s] = new SoundFile(this, "sounds/short/sound_" + s + ".mp3");
+  }
+  for (int s=0; s < longSound.length; s++) {
+    longSound[s] = new SoundFile(this, "sounds/long/sound_" + s + ".mp3");
+  }
 }
 
 void soundDraw() {
   if ( millis() - startLongSoundCount > longSoundInterval && playLongSound ) {
-    files[1].play();
+    int chooseSound = (int) random(longSound.length);
+    longSound[chooseSound].play();
     playLongSound = false;
   }
 }
@@ -23,7 +28,8 @@ class SoundControl {
   }
 
   void shortSound() {
-    files[0].play();
+    int chooseSound = (int) random(shortSound.length);
+    shortSound[chooseSound].play();
   }
 
   void longSound() {

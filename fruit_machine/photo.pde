@@ -13,7 +13,7 @@ class Photo {
   int imageHeight = height/3;
 
   Photo(int stripID, int photoID, float s) {
-    photo = loadImage("lumi_0_" + photoID + ".jpg");
+    photo = loadImage("loonies/_" + photoID + "_" + stripID + ".jpg");
     //photo = loadImage("lumi_" + stripID + "_" + photoID + ".jpg");
     int photoPos = photoID; 
     if ( photoID >= 2 ) {
