@@ -15,11 +15,11 @@ class Photo {
   Photo(int stripID, int photoID, float s) {
     photo = loadImage("loonies/_" + photoID + "_" + stripID + ".jpg");
     //photo = loadImage("lumi_" + stripID + "_" + photoID + ".jpg");
-    int photoPos = photoID; 
-    if ( photoID >= 2 ) {
-      photoPos = 2;
-    }
-    xpos = (width * photoPos);
+    //int photoPos = photoID; 
+    //if ( photoID >= 2 ) {
+    //  photoPos = 2;
+    //}
+    //xpos = (width * photoPos);
     ypos = imageHeight * stripID;
     targetXpos = 0;
     targetYpos = ypos;
@@ -27,6 +27,10 @@ class Photo {
     easing = 0.1;
   }
 
+  void initPos(int pos) {
+    xpos = (width * pos);
+  }
+  
   void update() {
     move();
     display();
@@ -60,11 +64,13 @@ class Photo {
 
   void resume(int resumePos) {
     haulting = false;
-    int photoPos = resumePos; 
-    if ( resumePos >= 2 ) {
-      photoPos = 2;
-    }
-    xpos = (width * photoPos);
+    initPos(resumePos);    
+    
+    //int photoPos = resumePos; 
+    //if ( resumePos >= 2 ) {
+    //  photoPos = 2;
+    //}
+    //xpos = (width * photoPos);
   }
 
   void clear() {

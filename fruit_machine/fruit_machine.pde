@@ -37,9 +37,9 @@ void setup() {
   //size(displayWidth, displayHeight, OPENGL); // full screen mode
   //fullScreen();
   smooth();
-  strips.add(new Strip(0, totalLoonies, 40));
-  strips.add(new Strip(1, totalLoonies, 35));
-  strips.add(new Strip(2, totalLoonies, 37));
+  strips.add(new Strip(0, totalLoonies, 33));
+  strips.add(new Strip(1, totalLoonies, 28));
+  strips.add(new Strip(2, totalLoonies, 31));
 
   soundSetup();
   sound = new SoundControl();
